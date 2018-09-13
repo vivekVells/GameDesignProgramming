@@ -1,8 +1,11 @@
 # Bricks vs Defender
 
-### Title: Bricks vs Defender
-### Author: Vivek Vellaiyappan Surulimuthu
-### Proposal Submission Date: 13th September 2018
+### Title: 
+- Bricks vs Defender
+### Author: 
+- Vivek Vellaiyappan Surulimuthu
+### Proposal Submission Date: 
+- 13th September 2018
 ### Project Scope: 
 #### Description: 
 - Combination of Brick Breaker and Pillball  Game but totally new concept that is not available anywhere in internet as of now. The game to be developed - titled “Bricks vs Defender” will be a multiplayer defending game which is based on Last Man Standing gaming concept. 
