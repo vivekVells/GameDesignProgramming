@@ -1,5 +1,6 @@
 # Bricks vs Defender
 
+## have to reformat the followings 
 Title: Bricks vs Defender
 Author: Vivek Vellaiyappan Surulimuthu
 Proposal Submission Date: 13th September 2018
