@@ -1,15 +1,14 @@
-# SnakeGame
-- This game will be built under the guidance of Dr. Ron Coleman, Marist College, NY for the coursework of MSCS 565L
+# Game Design Programming Coursework
+- This coursework is taken under the guidance of Dr. Ron Coleman, Marist College, NY for the coursework of MSCS 565L
 
 ## Objective
-- Create Snake game using Pygame
+- Understand the concept of gaming and kickstart by using PyGame to design game
 
 ## Tech involved
 - Python, PyGame
 
-## Project Demo (all demo files location: [link](https://github.com/vivekVells/SnakeGame/tree/master/demo))
-- [Video Link](to be updated soon)
-- [Working Demo - PDF sheet](to be updated soon)
+## Project
+- [Bricks vs Defender](https://github.com/vivekVells/GameDesignProgramming/tree/master/GamesDesigned/BricksVsDefender)
 
-## Working Functionality (as of now)
-![](https://github.com/vivekVells/SnakeGame/blob/master/demo/lab1%20pygame%20install%20and%20snake%20run%20test.png)
+## Working Functionality
+- will be updated soon
