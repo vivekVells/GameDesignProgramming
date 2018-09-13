@@ -1,5 +1,5 @@
 # Game Design Programming Coursework
-- This coursework is taken under the guidance of Dr. Ron Coleman, Marist College, NY for the coursework of MSCS 565L
+- This coursework (MSCS 565L) is taken under the guidance of Dr. Ron Coleman, Marist College, NY
 
 ## Objective
 - Understand the concept of gaming and kickstart by using PyGame to design game
