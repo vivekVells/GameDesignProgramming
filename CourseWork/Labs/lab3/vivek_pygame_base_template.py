@@ -68,6 +68,16 @@ while not done:
     # drawing the door
     pygame.draw.rect(screen, BLACK, [190, 350, 20, 50], 0)
 
+    BLUE = (0, 0, 255)
+    BOARD_X = 50
+    BOARD_Y = 350
+    BOARD_LENGTH = 150
+    BOARD_WIDTH = 70
+    BOARD_COLOR_FILL = 0
+
+    pygame.draw.rect(screen, BLUE, [BOARD_X, BOARD_Y, BOARD_LENGTH, BOARD_WIDTH], BOARD_COLOR_FILL)
+
+
 
     # --- Go ahead and update the screen with what we've drawn.
     pygame.display.flip()
