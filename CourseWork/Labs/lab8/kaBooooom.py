@@ -129,7 +129,7 @@ for i in range(50):
     block = Block(BLUE)
 
     # Set a random location for the block
-    block.rect.x = random.randrange(screen_width)
+    block.rect.x = random.randrange(screen_width - RECT_FRAME_WIDTH)
     block.rect.y = random.randrange(350)
 
     # Add the block to the list of objects
@@ -140,6 +140,7 @@ for i in range(50):
 player = Player()
 all_sprites_list.add(player)
 backstop = StopBlock()
+all_sprites_list.add(backstop)
 
 # Loop until the user clicks the close button.
 done = False
