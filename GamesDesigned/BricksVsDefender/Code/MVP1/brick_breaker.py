@@ -10,6 +10,10 @@ Aim:
     which is based on Last Man Standing gaming concept.
 This File Scope:
   For now, brick breaker game alone done. further improvements will be made
+Short Note: (Will be doing the following)
+  Function creations for redundant operations
+  Constant entries file import action
+  Image Background
 """
 
 import sys
@@ -21,8 +25,22 @@ SCREEN_SIZE = (640, 480)
 # Brick Dimensions
 BRICK_WIDTH = 60
 BRICK_HEIGHT = 15
-BRICKS_ROW = 7
+BRICKS_ROW = 5
 BRICKS_COLUMN = 8
+
+# Color
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+BLUE = (0, 0, 255)
+YELLOW = (200, 200, 0)
+RED = (220, 0, 0)
+GREEN = (0, 128, 0)
+
+BRICK_COLOR = RED
+BALL_COLOR = BLACK
+PADDLE_COLOR = (255, 255, 170)
+
+BALL_SPEED = [4, -4]
 
 # Paddle Dimensions
 PADDLE_WIDTH = 70
@@ -42,15 +60,6 @@ MAX_BALL_Y = SCREEN_SIZE[1] - BALL_DIAMETER
 # Paddle Y coordinate
 PADDLE_Y = SCREEN_SIZE[1] - PADDLE_HEIGHT - 10
 
-# Color
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-BLUE = (0, 0, 255)
-YELLOW = (200, 200, 0)
-RED = (220, 0, 0)
-BRICK_COLOR = RED
-GREEN = (0, 128, 0)
-
 # Game State
 STATE_BALL_IN_PADDLE = 0
 STATE_PLAYING = 1
@@ -59,6 +68,8 @@ STATE_GAME_OVER = 3
 
 MAX_LIFE = 3
 MAX_SCORE_PER_BRICK = 10
+
+AUDIO_FILE_LOCATION = 'bing_audio.wav'
 
 
 class BrickBreaker(object):
@@ -74,13 +85,15 @@ class BrickBreaker(object):
         self.ball = None
         self.ball_vel = None
 
+        self.audio_play = pygame.mixer.Sound(AUDIO_FILE_LOCATION)
+        self.audio_play.set_volume(10)
+
         self.screen = pygame.display.set_mode(SCREEN_SIZE)
         pygame.display.set_caption("Brick Breaker Game")
 
         self.clock = pygame.time.Clock()
 
         if pygame.font:
-            # Select the font to use, size, bold, italics
             self.font = pygame.font.SysFont('Calibri', 20, True, True)
         else:
             self.font = None
@@ -95,7 +108,7 @@ class BrickBreaker(object):
         self.paddle = pygame.Rect(300, PADDLE_Y, PADDLE_WIDTH, PADDLE_HEIGHT)
         self.ball = pygame.Rect(300, PADDLE_Y - BALL_DIAMETER, BALL_DIAMETER, BALL_DIAMETER)
 
-        self.ball_vel = [5, -5]
+        self.ball_vel = BALL_SPEED
 
         self.create_bricks()
 
@@ -126,7 +139,7 @@ class BrickBreaker(object):
                 self.paddle.left = MAX_PADDLE_X
 
         if keys[pygame.K_SPACE] and self.state == STATE_BALL_IN_PADDLE:
-            self.ball_vel = [5, -5]
+            self.ball_vel = BALL_SPEED
             self.state = STATE_PLAYING
         elif keys[pygame.K_RETURN] and (self.state == STATE_GAME_OVER or self.state == STATE_WON):
             self.restart_game()
@@ -158,6 +171,7 @@ class BrickBreaker(object):
     def handle_collisions(self):
         for brick in self.bricks:
             if self.ball.colliderect(brick):
+                self.audio_play.play(0)
                 self.score += MAX_SCORE_PER_BRICK
                 self.ball_vel[1] = -self.ball_vel[1]
                 self.bricks.remove(brick)
@@ -167,6 +181,7 @@ class BrickBreaker(object):
             self.state = STATE_WON
 
         if self.ball.colliderect(self.paddle):
+            self.audio_play.play(0)
             self.ball.top = PADDLE_Y - BALL_DIAMETER
             self.ball_vel[1] = -self.ball_vel[1]
         elif self.ball.top > self.paddle.top:
@@ -178,7 +193,8 @@ class BrickBreaker(object):
 
     def show_stats(self):
         if self.font:
-            font_surface = self.font.render("SCORE: " + str(self.score) + "     MAX LIVES: " + str(self.lives), True, GREEN)
+            font_surface = self.font.render("SCORED: " + str(self.score)
+                                            + "     MAX LIVES: " + str(self.lives), True, GREEN)
             self.screen.blit(font_surface, (205, 5))
 
     def show_message(self, message):
@@ -205,19 +221,20 @@ class BrickBreaker(object):
             elif self.state == STATE_BALL_IN_PADDLE:
                 self.ball.left = self.paddle.left + self.paddle.width / 2
                 self.ball.top = self.paddle.top - self.ball.height
-                self.show_message("PRESS SPACE TO LAUNCH THE BALL")
+                self.show_message("PRESS SPACE KEY to Throw the ball")
             elif self.state == STATE_GAME_OVER:
-                self.show_message("GAME OVER. PRESS ENTER TO PLAY AGAIN")
+                self.show_message("GAME OVER. PRESS ENTER KEY to PLAY AGAIN")
             elif self.state == STATE_WON:
-                self.show_message("YOU WON! PRESS ENTER TO PLAY AGAIN")
+                self.show_message("YOU've WON! PRESS ENTER KEY to PLAY AGAIN")
 
             self.draw_bricks()
 
             # Drawing paddle
-            pygame.draw.rect(self.screen, BLUE, self.paddle)
+            pygame.draw.rect(self.screen, PADDLE_COLOR, self.paddle)
 
             # Drawing ball
-            pygame.draw.circle(self.screen, BLACK, (self.ball.left + BALL_RADIUS, self.ball.top + BALL_RADIUS),
+            pygame.draw.circle(self.screen, BALL_COLOR,
+                               (self.ball.left + BALL_RADIUS, self.ball.top + BALL_RADIUS),
                                BALL_RADIUS)
 
             self.show_stats()
@@ -296,6 +313,7 @@ class GameIntro(object):
 def initialize_brick_game():
     brick_breaker_obj = BrickBreaker()
     brick_breaker_obj.start_game()
+
 
 if __name__ == "__main__":
     game_intro_obj = GameIntro()
