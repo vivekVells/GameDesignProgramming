@@ -16,6 +16,9 @@ Short Note: (Will be doing the following)
   Image Background
 """
 
+# to execute the .pyc file
+#!/usr/bin/python
+
 import sys
 import pygame
 
