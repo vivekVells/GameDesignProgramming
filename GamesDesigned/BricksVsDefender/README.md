@@ -5,7 +5,8 @@
 ### Author: 
 - Vivek Vellaiyappan Surulimuthu
 ### Proposal Submission Date: 
-- 13th September 2018
+- 13th September 2018 
+- [Game Proposal Link](https://github.com/vivekVells/GameDesignProgramming/blob/master/GamesDesigned/BricksVsDefender/Design/Bricks%20vs%20Defender%20-%20Project%20Game%20Proposal%20.pdf) 
 ### Repo Location:
 - https://github.com/vivekVells/GameDesignProgramming
 ### Version 1.0 - MVP-1 - Demo Files Location
