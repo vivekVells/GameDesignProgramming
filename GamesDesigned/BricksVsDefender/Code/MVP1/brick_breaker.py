@@ -17,7 +17,7 @@ Short Note: (Will be doing the following)
 """
 
 # to execute the .pyc file
-#!/usr/bin/python
+# !/usr/bin/python
 
 import sys
 import pygame
@@ -276,7 +276,6 @@ class BrickBreaker(object):
             elif self.enlarge_paddle:
                 self.paddle = pygame.Rect(self.paddle.x, self.paddle.y, 200, PADDLE_HEIGHT)
                 pygame.draw.rect(self.screen, PADDLE_COLOR, self.paddle)
-
 
             # Drawing ball
             pygame.draw.circle(self.screen, BALL_COLOR,
