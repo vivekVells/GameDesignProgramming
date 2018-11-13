@@ -11,8 +11,11 @@
 ### Version 1.0 - MVP-1 - Demo Files Location
 - https://github.com/vivekVells/GameDesignProgramming/tree/master/GamesDesigned/BricksVsDefender/Demo/ver1.0%20-%20MVP1
 ### Version 1.0 - MVP-1 - Application Preview
-- [Click here]() to view the screenshots of the working program application
-### Project Scope: 
+- [Click here](https://github.com/vivekVells/GameDesignProgramming/blob/master/GamesDesigned/BricksVsDefender/README.md#application-preview) to view all the screenshots of the working program application
+- HOME PAGE
+![Home Page](https://github.com/vivekVells/GameDesignProgramming/blob/master/GamesDesigned/BricksVsDefender/Demo/ver1.0%20-%20MVP1/Game%20Home%20Screen.png)
+
+### Actual Project Scope: 
 #### Description: 
 - Combination of Brick Breaker and Pillball  Game but totally new concept that is not available anywhere in internet as of now. The game to be developed - titled “Bricks vs Defender” will be a multiplayer defending game which is based on Last Man Standing gaming concept. 
 #### Planning: 
@@ -99,4 +102,15 @@
 ###### P.S.: Thank you for taking your time and reading this big proposal which is not in a single page.
 
 ### Application Preview
-
+- Welcome Screen
+![](https://github.com/vivekVells/GameDesignProgramming/blob/master/GamesDesigned/BricksVsDefender/Demo/ver1.0%20-%20MVP1/Welcome%20Screen.png)
+- Game Home Screen
+![](https://github.com/vivekVells/GameDesignProgramming/blob/master/GamesDesigned/BricksVsDefender/Demo/ver1.0%20-%20MVP1/Game%20Home%20Screen.png)
+- Game Won Status Screen
+![](https://github.com/vivekVells/GameDesignProgramming/blob/master/GamesDesigned/BricksVsDefender/Demo/ver1.0%20-%20MVP1/Game%20Won%20Status%20Screen.png)
+- Game Over Status Screen
+![](https://github.com/vivekVells/GameDesignProgramming/blob/master/GamesDesigned/BricksVsDefender/Demo/ver1.0%20-%20MVP1/Game%20Over%20Screen.png)
+- Power Up - Paddle Width Enlarged Status Screen
+![](https://github.com/vivekVells/GameDesignProgramming/blob/master/GamesDesigned/BricksVsDefender/Demo/ver1.0%20-%20MVP1/Power%20Up%20-%20Enlarged%20Paddle%20Width%20Screen.png)
+- Power Up - Max Life Increased Status Screen
+![](https://github.com/vivekVells/GameDesignProgramming/blob/master/GamesDesigned/BricksVsDefender/Demo/ver1.0%20-%20MVP1/Power%20Up%20-%20Max%20Life%20Increase%20Screen.png)
