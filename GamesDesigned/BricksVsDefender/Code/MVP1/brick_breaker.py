@@ -22,12 +22,6 @@ import pygame
 # Screen Size
 SCREEN_SIZE = (640, 480)
 
-# Brick Dimensions
-BRICK_WIDTH = 60
-BRICK_HEIGHT = 15
-BRICKS_ROW = 5
-BRICKS_COLUMN = 8
-
 # Color
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
@@ -35,30 +29,42 @@ BLUE = (0, 0, 255)
 YELLOW = (200, 200, 0)
 RED = (220, 0, 0)
 GREEN = (0, 128, 0)
+ORANGE = (255, 128, 0)
+VIOLET = (255, 0, 255)
+HOT_PINK = (255, 105, 180)
+BROWN_FADED = (138, 78, 55)
 
-BRICK_COLOR = RED
+BRICK_COLOR = BROWN_FADED
+PADDLE_COLOR = RED
 BALL_COLOR = BLACK
-PADDLE_COLOR = (255, 255, 170)
+POW_MAX_LIFE_BRICK_COLOR = ORANGE
+POW_PADDLE_COLOR = VIOLET
 
-BALL_SPEED = [4, -4]
+# Brick Dimensions
+BRICK_WIDTH = 60
+BRICK_HEIGHT = 15
+BRICKS_ROW = 1
+BRICKS_COLUMN = 8
 
 # Paddle Dimensions
 PADDLE_WIDTH = 70
-PADDLE_HEIGHT = 12
+POW_PADDLE_WIDTH = 100
+PADDLE_HEIGHT = 15
 PADDLE_SPEED_LEFT = 15
 PADDLE_SPEED_RIGHT = 15
 
 # Ball Dimensions
+BALL_SPEED = [4, -4]
 BALL_DIAMETER = 16
 BALL_RADIUS = int(BALL_DIAMETER / 2)
 
-# Positions
+# Max movement of entities inside screen
 MAX_PADDLE_X = SCREEN_SIZE[0] - PADDLE_WIDTH
 MAX_BALL_X = SCREEN_SIZE[0] - BALL_DIAMETER
 MAX_BALL_Y = SCREEN_SIZE[1] - BALL_DIAMETER
 
-# Paddle Y coordinate
-PADDLE_Y = SCREEN_SIZE[1] - PADDLE_HEIGHT - 10
+# Paddle location on screen
+PADDLE_Y = SCREEN_SIZE[1] - PADDLE_HEIGHT - 20
 
 # Game State
 STATE_BALL_IN_PADDLE = 0
@@ -78,10 +84,15 @@ class BrickBreaker(object):
 
         self.done = False
         self.bricks = []
-        self.lives = None
+        self.pow_bricks = []
+        self.max_lives = None
+        self.max_life_brick = None
+        self.brick_width_enlarge = None
+        self.enlarge_paddle = False
         self.score = None
         self.state = None
         self.paddle = None
+        self.pow_paddle_width = None
         self.ball = None
         self.ball_vel = None
 
@@ -92,28 +103,25 @@ class BrickBreaker(object):
         pygame.display.set_caption("Brick Breaker Game")
 
         self.clock = pygame.time.Clock()
-
-        if pygame.font:
-            self.font = pygame.font.SysFont('Calibri', 20, True, True)
-        else:
-            self.font = None
+        self.font = pygame.font.SysFont('Calibri', 20, True, True)
 
         self.restart_game()
 
     def restart_game(self):
-        self.lives = MAX_LIFE
+        self.bricks = []
+        self.pow_bricks = []
+        self.enlarge_paddle = False
+        self.max_lives = MAX_LIFE
         self.score = 0
         self.state = STATE_BALL_IN_PADDLE
-
         self.paddle = pygame.Rect(300, PADDLE_Y, PADDLE_WIDTH, PADDLE_HEIGHT)
         self.ball = pygame.Rect(300, PADDLE_Y - BALL_DIAMETER, BALL_DIAMETER, BALL_DIAMETER)
-
         self.ball_vel = BALL_SPEED
-
         self.create_bricks()
 
     def create_bricks(self):
-        y_ofs = 50
+        y_ofs = 100
+
         for i in range(BRICKS_ROW):
             x_ofs = 50
             for j in range(BRICKS_COLUMN):
@@ -121,9 +129,24 @@ class BrickBreaker(object):
                 x_ofs += BRICK_WIDTH + 10
             y_ofs += BRICK_HEIGHT + 5
 
+        # Power up features
+        # max lives increase brick
+        self.pow_bricks.append(pygame.Rect(SCREEN_SIZE[0]/2, 50, BRICK_WIDTH, BRICK_HEIGHT))
+        self.max_life_brick = self.pow_bricks[0]
+
+        # enlarge paddle width brick
+        self.pow_bricks.append(pygame.Rect(SCREEN_SIZE[0]/2 - 100, 50, BRICK_WIDTH, BRICK_HEIGHT))
+        self.brick_width_enlarge = self.pow_bricks[1]
+
     def draw_bricks(self):
         for brick in self.bricks:
             pygame.draw.rect(self.screen, BRICK_COLOR, brick)
+
+        for pow_brick in self.pow_bricks:
+            if pow_brick == self.max_life_brick:
+                pygame.draw.rect(self.screen, POW_MAX_LIFE_BRICK_COLOR, pow_brick)
+            elif pow_brick == self.brick_width_enlarge:
+                pygame.draw.rect(self.screen, POW_PADDLE_COLOR, pow_brick)
 
     def get_input(self):
         keys = pygame.key.get_pressed()
@@ -177,6 +200,16 @@ class BrickBreaker(object):
                 self.bricks.remove(brick)
                 break
 
+        for pow_brick in self.pow_bricks:
+            if self.ball.colliderect(pow_brick):
+                if pow_brick == self.pow_bricks[0]:
+                    self.pow_bricks.remove(pow_brick)
+                    self.max_lives += 1
+                elif pow_brick == self.pow_bricks[1]:
+                    self.pow_bricks.remove(pow_brick)
+                    self.enlarge_paddle = True
+                break
+
         if len(self.bricks) == 0:
             self.state = STATE_WON
 
@@ -185,17 +218,22 @@ class BrickBreaker(object):
             self.ball.top = PADDLE_Y - BALL_DIAMETER
             self.ball_vel[1] = -self.ball_vel[1]
         elif self.ball.top > self.paddle.top:
-            self.lives -= 1
-            if self.lives > 0:
+            self.max_lives -= 1
+            if self.max_lives > 0:
                 self.state = STATE_BALL_IN_PADDLE
             else:
                 self.state = STATE_GAME_OVER
 
     def show_stats(self):
         if self.font:
-            font_surface = self.font.render("SCORED: " + str(self.score)
-                                            + "     MAX LIVES: " + str(self.lives), True, GREEN)
-            self.screen.blit(font_surface, (205, 5))
+            font_surface = self.font.render("SCORED: " + str(self.score), True, GREEN)
+            self.screen.blit(font_surface, (20, 5))
+
+            font_surface = self.font.render("MAX LIVES: " + str(self.max_lives), True, ORANGE)
+            self.screen.blit(font_surface, (150, 5))
+
+            font_surface = self.font.render("Paddle Width Enlarge", True, VIOLET)
+            self.screen.blit(font_surface, (350, 5))
 
     def show_message(self, message):
         if self.font:
@@ -230,7 +268,12 @@ class BrickBreaker(object):
             self.draw_bricks()
 
             # Drawing paddle
-            pygame.draw.rect(self.screen, PADDLE_COLOR, self.paddle)
+            if not self.enlarge_paddle:
+                pygame.draw.rect(self.screen, PADDLE_COLOR, self.paddle)
+            elif self.enlarge_paddle:
+                self.paddle = pygame.Rect(self.paddle.x, self.paddle.y, 200, PADDLE_HEIGHT)
+                pygame.draw.rect(self.screen, PADDLE_COLOR, self.paddle)
+
 
             # Drawing ball
             pygame.draw.circle(self.screen, BALL_COLOR,
@@ -285,7 +328,7 @@ class GameIntro(object):
             message = "Game: Bricks vs Defender - MVP-1 " \
                       "\nAuthor: Vivek Vellaiyappan Surulimuthu" \
                       "\nContact: vivekvellaiyappans@gmail.com" \
-                      "\nVersion: ALPHA release" \
+                      "\nVersion: v1.0" \
                       "\nDescription:" \
                       "\n  As of now, paddle is used to navigate the ball to break bricks" \
                       "\n  Further improvements will be made over time " \
