@@ -6,6 +6,12 @@
 - Vivek Vellaiyappan Surulimuthu
 ### Proposal Submission Date: 
 - 13th September 2018
+### Repo Location:
+- https://github.com/vivekVells/GameDesignProgramming
+### Version 1.0 - MVP-1 - Demo Files Location
+- https://github.com/vivekVells/GameDesignProgramming/tree/master/GamesDesigned/BricksVsDefender/Demo/ver1.0%20-%20MVP1
+### Version 1.0 - MVP-1 - Application Preview
+- [Click here]() to view the screenshots of the working program application
 ### Project Scope: 
 #### Description: 
 - Combination of Brick Breaker and Pillball  Game but totally new concept that is not available anywhere in internet as of now. The game to be developed - titled “Bricks vs Defender” will be a multiplayer defending game which is based on Last Man Standing gaming concept. 
@@ -91,3 +97,6 @@
 - Pinball game - https://en.wikipedia.org/wiki/Pinball (find info about flipper in this link)
 
 ###### P.S.: Thank you for taking your time and reading this big proposal which is not in a single page.
+
+### Application Preview
+
