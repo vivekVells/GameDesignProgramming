@@ -14,6 +14,7 @@ import pygame
 # Colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+GREEN = (0, 128, 0)
 
 # Set the width and height of each snake segment
 segment_width = 15
