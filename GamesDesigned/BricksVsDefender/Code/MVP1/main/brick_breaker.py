@@ -81,6 +81,15 @@ MAX_SCORE_PER_BRICK = 10
 AUDIO_FILE_LOCATION = 'bing_audio.wav'
 
 
+def get_high_score():
+    try:
+        read_high_score_file = open("scores.txt", "r")
+
+        return read_high_score_file.readline()
+    except FileNotFoundError:
+        return str(0)
+
+
 class BrickBreaker(object):
     def __init__(self):
         pygame.init()
@@ -98,6 +107,9 @@ class BrickBreaker(object):
         self.pow_paddle_width = None
         self.ball = None
         self.ball_vel = None
+
+        self.attempt_score_list = []
+        self.current_score = 0
 
         self.audio_play = pygame.mixer.Sound(AUDIO_FILE_LOCATION)
         self.audio_play.set_volume(10)
@@ -121,6 +133,8 @@ class BrickBreaker(object):
         self.ball = pygame.Rect(300, PADDLE_Y - BALL_DIAMETER, BALL_DIAMETER, BALL_DIAMETER)
         self.ball_vel = BALL_SPEED
         self.create_bricks()
+        self.attempt_score_list = []
+        self.current_score = 0
 
     def create_bricks(self):
         y_ofs = 100
@@ -168,7 +182,8 @@ class BrickBreaker(object):
             self.ball_vel = BALL_SPEED
             self.state = STATE_PLAYING
         elif keys[pygame.K_RETURN] and (self.state == STATE_GAME_OVER or self.state == STATE_WON):
-            self.restart_game()
+            game_end_summary_obj = GameEndSummary()
+            game_end_summary_obj.end_screen()
 
         if keys[pygame.K_BACKSPACE]:
             self.done = True
@@ -194,6 +209,14 @@ class BrickBreaker(object):
             self.ball.top = MAX_BALL_Y
             self.ball_vel[1] = -self.ball_vel[1]
 
+    def calculate_high_score(self):
+        current_high_score = int(get_high_score())
+
+        if self.score > current_high_score:
+            write_high_score = open("scores.txt", "w")
+            write_high_score.write(str(self.score))
+            write_high_score.close()
+
     def handle_collisions(self):
         for brick in self.bricks:
             if self.ball.colliderect(brick):
@@ -201,6 +224,7 @@ class BrickBreaker(object):
                 self.score += MAX_SCORE_PER_BRICK
                 self.ball_vel[1] = -self.ball_vel[1]
                 self.bricks.remove(brick)
+                self.calculate_high_score()
                 break
 
         for pow_brick in self.pow_bricks:
@@ -232,11 +256,14 @@ class BrickBreaker(object):
             font_surface = self.font.render("SCORED: " + str(self.score), True, GREEN)
             self.screen.blit(font_surface, (20, 5))
 
-            font_surface = self.font.render("MAX LIVES: " + str(self.max_lives), True, ORANGE)
+            font_surface = self.font.render("LIVES: " + str(self.max_lives), True, ORANGE)
             self.screen.blit(font_surface, (150, 5))
 
-            font_surface = self.font.render("Paddle Width Enlarge", True, VIOLET)
-            self.screen.blit(font_surface, (350, 5))
+            font_surface = self.font.render("Enlarged Paddle", True, VIOLET)
+            self.screen.blit(font_surface, (250, 5))
+
+            font_surface = self.font.render("Hi Score: " + get_high_score(), True, BLUE)
+            self.screen.blit(font_surface, (430, 5))
 
     def show_message(self, message):
         if self.font:
@@ -263,10 +290,35 @@ class BrickBreaker(object):
                 self.ball.left = self.paddle.left + self.paddle.width / 2
                 self.ball.top = self.paddle.top - self.ball.height
                 self.show_message("PRESS SPACE KEY to Throw the ball")
+                self.attempt_score_list.append(self.score)
             elif self.state == STATE_GAME_OVER:
-                self.show_message("GAME OVER. PRESS ENTER KEY to PLAY AGAIN")
+                # appending the last attempt score
+                self.attempt_score_list.append(self.score)
+
+                final_list = []
+                for num in self.attempt_score_list:
+                    if num not in final_list:
+                        final_list.append(num)
+                self.attempt_score_list = final_list
+
+                try:
+                    self.attempt_score_list.remove(0)
+                except ValueError:
+                    pass
+
+                # write total attempts score in game summary
+                write_game_summary = open("game_summary.txt", "w")
+
+                for index, attempt in enumerate(self.attempt_score_list):
+                    write_game_summary.write("Attempt " + str(index + 1) + ": " + str(attempt) + "\n")
+
+                write_game_summary.close()
+
+                game_end_summary_obj = GameEndSummary()
+                game_end_summary_obj.end_screen()
             elif self.state == STATE_WON:
-                self.show_message("YOU've WON! PRESS ENTER KEY to PLAY AGAIN")
+                game_end_summary_obj = GameEndSummary()
+                game_end_summary_obj.end_screen()
 
             self.draw_bricks()
 
@@ -285,6 +337,74 @@ class BrickBreaker(object):
             self.show_stats()
 
             pygame.display.flip()
+
+
+class GameEndSummary(object):
+    def __init__(self):
+        pygame.init()
+
+        self.done = False
+        screen_width = 700
+        screen_height = 400
+        self.screen = pygame.display.set_mode([screen_width, screen_height])
+
+        pygame.display.set_caption("Welcome to Brick Breaker Game")
+
+        self.clock = pygame.time.Clock()
+
+        if pygame.font:
+            self.font = pygame.font.SysFont('Calibri', 20, True, True)
+        else:
+            self.font = None
+
+        self.end_screen()
+
+    def game_end_get_input(self):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_RETURN]:
+            initialize_brick_game()
+
+        if keys[pygame.K_ESCAPE]:
+            self.done = True
+
+    def end_screen(self):
+        while not self.done:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.done = True
+
+            self.clock.tick(60)
+            self.screen.fill(WHITE)
+            self.game_end_get_input()
+
+            font = pygame.font.SysFont('Calibri', 20, False, False)
+            message = "Game Summary" \
+                      "\n\nPRESS ENTER TO START PLAY" \
+                      "\nPRESS ESCAPE KEY TO QUIT GAME" \
+                      "\n\n\nScores per Attempt Summary\n"
+
+            screen_text_x = 20
+            screen_text_y = 20
+
+            for line in message.splitlines():
+                text = font.render(line, True, GREEN)
+                self.screen.blit(text, [screen_text_x, screen_text_y])
+                screen_text_y += 20
+
+            read_game_summary = open("game_summary.txt", "r")
+
+            for attempt in read_game_summary.readlines():
+                text = font.render(attempt.strip(), True, GREEN)
+                self.screen.blit(text, [screen_text_x, screen_text_y])
+                screen_text_y += 20
+
+            high_score_message = "High Score so far: " + get_high_score()
+            text = font.render(high_score_message, True, GREEN)
+            self.screen.blit(text, [screen_text_x, screen_text_y])
+
+            pygame.display.flip()
+            self.clock.tick(60)
 
 
 class GameIntro(object):
