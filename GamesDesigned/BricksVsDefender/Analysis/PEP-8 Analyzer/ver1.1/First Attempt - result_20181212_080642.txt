@@ -1,14 +1,35 @@
+Check results
+=============
+
+E501:5:80:line too long (107 > 79 characters)
+E501:9:80:line too long (94 > 79 characters)
+W291:33:18:trailing whitespace
+E501:133:80:line too long (92 > 79 characters)
+E501:145:80:line too long (88 > 79 characters)
+E501:151:80:line too long (92 > 79 characters)
+E501:155:80:line too long (98 > 79 characters)
+E501:164:80:line too long (82 > 79 characters)
+E501:184:80:line too long (98 > 79 characters)
+E501:256:80:line too long (86 > 79 characters)
+E501:259:80:line too long (90 > 79 characters)
+E501:265:80:line too long (88 > 79 characters)
+E501:313:80:line too long (102 > 79 characters)
+E501:329:80:line too long (91 > 79 characters)
+E501:334:80:line too long (91 > 79 characters)
+E501:455:80:line too long (92 > 79 characters)
+
+Code
+=============
 """
 Title: Bricks vs Defender
 Author: Vivek Vellaiyappan Surulimuthu | vivekvellaiyappans@gmail.com
 Proposal Submission Date: 13th September 2018
-Project Url: https://github.com/vivekVells/GameDesignProgramming/
+Project Url: https://github.com/vivekVells/GameDesignProgramming/tree/master/GamesDesigned/BricksVsDefender
 Aim:
   Combination of Brick Breaker and Pill ball Game but totally new concept
     that is not available anywhere in internet as of now.
-  The game to be developed - titled “Bricks vs Defender”
-    will be a multi-player defending game
-      which is based on Last Man Standing gaming concept.
+  The game to be developed - titled “Bricks vs Defender” will be a multi-player defending game
+    which is based on Last Man Standing gaming concept.
 This File Scope:
   For now, brick breaker game alone done. further improvements will be made
 Short Note: (Will be doing the following)
@@ -31,7 +52,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 YELLOW = (200, 200, 0)
-RED = (220, 0, 0)
+RED = (220, 0, 0)  
 GREEN = (0, 128, 0)
 ORANGE = (255, 128, 0)
 VIOLET = (255, 0, 255)
@@ -131,10 +152,7 @@ class BrickBreaker(object):
         self.score = 0
         self.state = STATE_BALL_IN_PADDLE
         self.paddle = pygame.Rect(300, PADDLE_Y, PADDLE_WIDTH, PADDLE_HEIGHT)
-        self.ball = pygame.Rect(
-            300, PADDLE_Y - BALL_DIAMETER,
-            BALL_DIAMETER, BALL_DIAMETER
-        )
+        self.ball = pygame.Rect(300, PADDLE_Y - BALL_DIAMETER, BALL_DIAMETER, BALL_DIAMETER)
         self.ball_vel = BALL_SPEED
         self.create_bricks()
         self.attempt_score_list = []
@@ -146,32 +164,17 @@ class BrickBreaker(object):
         for i in range(BRICKS_ROW):
             x_ofs = 50
             for j in range(BRICKS_COLUMN):
-                self.bricks.append(
-                    pygame.Rect(
-                        x_ofs, y_ofs,
-                        BRICK_WIDTH, BRICK_HEIGHT
-                    )
-                )
+                self.bricks.append(pygame.Rect(x_ofs, y_ofs, BRICK_WIDTH, BRICK_HEIGHT))
                 x_ofs += BRICK_WIDTH + 10
             y_ofs += BRICK_HEIGHT + 5
 
         # Power up features
         # max lives increase brick
-        self.pow_bricks.append(
-            pygame.Rect(
-                SCREEN_SIZE[0]/2, 50,
-                BRICK_WIDTH, BRICK_HEIGHT
-            )
-        )
+        self.pow_bricks.append(pygame.Rect(SCREEN_SIZE[0]/2, 50, BRICK_WIDTH, BRICK_HEIGHT))
         self.max_life_brick = self.pow_bricks[0]
 
         # enlarge paddle width brick
-        self.pow_bricks.append(
-            pygame.Rect(
-                SCREEN_SIZE[0]/2 - 100, 50,
-                BRICK_WIDTH, BRICK_HEIGHT
-            )
-        )
+        self.pow_bricks.append(pygame.Rect(SCREEN_SIZE[0]/2 - 100, 50, BRICK_WIDTH, BRICK_HEIGHT))
         self.brick_width_enlarge = self.pow_bricks[1]
 
     def draw_bricks(self):
@@ -180,17 +183,9 @@ class BrickBreaker(object):
 
         for pow_brick in self.pow_bricks:
             if pow_brick == self.max_life_brick:
-                pygame.draw.rect(
-                    self.screen,
-                    POW_MAX_LIFE_BRICK_COLOR,
-                    pow_brick
-                )
+                pygame.draw.rect(self.screen, POW_MAX_LIFE_BRICK_COLOR, pow_brick)
             elif pow_brick == self.brick_width_enlarge:
-                pygame.draw.rect(
-                    self.screen,
-                    POW_PADDLE_COLOR,
-                    pow_brick
-                )
+                pygame.draw.rect(self.screen, POW_PADDLE_COLOR, pow_brick)
 
     def get_input(self):
         keys = pygame.key.get_pressed()
@@ -208,8 +203,7 @@ class BrickBreaker(object):
         if keys[pygame.K_SPACE] and self.state == STATE_BALL_IN_PADDLE:
             self.ball_vel = BALL_SPEED
             self.state = STATE_PLAYING
-        elif keys[pygame.K_RETURN] and \
-                (self.state == STATE_GAME_OVER or self.state == STATE_WON):
+        elif keys[pygame.K_RETURN] and (self.state == STATE_GAME_OVER or self.state == STATE_WON):
             game_end_summary_obj = GameEndSummary()
             game_end_summary_obj.end_screen()
 
@@ -281,24 +275,16 @@ class BrickBreaker(object):
 
     def show_stats(self):
         if self.font:
-            font_surface = self.font.render(
-                "SCORED: " + str(self.score), True, GREEN
-            )
+            font_surface = self.font.render("SCORED: " + str(self.score), True, GREEN)
             self.screen.blit(font_surface, (20, 5))
 
-            font_surface = self.font.render(
-                "LIVES: " + str(self.max_lives), True, ORANGE
-            )
+            font_surface = self.font.render("LIVES: " + str(self.max_lives), True, ORANGE)
             self.screen.blit(font_surface, (150, 5))
 
-            font_surface = self.font.render(
-                "Enlarged Paddle", True, VIOLET
-            )
+            font_surface = self.font.render("Enlarged Paddle", True, VIOLET)
             self.screen.blit(font_surface, (250, 5))
 
-            font_surface = self.font.render(
-                "Hi Score: " + get_high_score(), True, BLUE
-            )
+            font_surface = self.font.render("Hi Score: " + get_high_score(), True, BLUE)
             self.screen.blit(font_surface, (430, 5))
 
     def show_message(self, message):
@@ -346,13 +332,7 @@ class BrickBreaker(object):
                 write_game_summary = open("game_summary.txt", "w")
 
                 for index, attempt in enumerate(self.attempt_score_list):
-                    write_game_summary.write(
-                        "Attempt " +
-                        str(index + 1) +
-                        ": " +
-                        str(attempt) +
-                        "\n"
-                    )
+                    write_game_summary.write("Attempt " + str(index + 1) + ": " + str(attempt) + "\n")
 
                 write_game_summary.close()
 
@@ -368,18 +348,13 @@ class BrickBreaker(object):
             if not self.enlarge_paddle:
                 pygame.draw.rect(self.screen, PADDLE_COLOR, self.paddle)
             elif self.enlarge_paddle:
-                self.paddle = pygame.Rect(
-                    self.paddle.x, self.paddle.y,
-                    200, PADDLE_HEIGHT
-                )
+                self.paddle = pygame.Rect(self.paddle.x, self.paddle.y, 200, PADDLE_HEIGHT)
                 pygame.draw.rect(self.screen, PADDLE_COLOR, self.paddle)
 
             # Drawing ball
-            pygame.draw.circle(
-                self.screen, BALL_COLOR,
-                (self.ball.left + BALL_RADIUS, self.ball.top + BALL_RADIUS),
-                BALL_RADIUS
-            )
+            pygame.draw.circle(self.screen, BALL_COLOR,
+                               (self.ball.left + BALL_RADIUS, self.ball.top + BALL_RADIUS),
+                               BALL_RADIUS)
 
             self.show_stats()
 
@@ -497,10 +472,9 @@ class GameIntro(object):
             message = "Game: Bricks vs Defender - MVP-1 " \
                       "\nAuthor: Vivek Vellaiyappan Surulimuthu" \
                       "\nContact: vivekvellaiyappans@gmail.com" \
-                      "\nVersion: v1.1" \
+                      "\nVersion: v1.0" \
                       "\nDescription:" \
-                      "\n  As of now, paddle is used to navigate " \
-                      "the ball to break bricks" \
+                      "\n  As of now, paddle is used to navigate the ball to break bricks" \
                       "\n  Further improvements will be made over time " \
                       "\n    to complete the " \
                       "\n    Bricks vs Defender Game Scope" \
