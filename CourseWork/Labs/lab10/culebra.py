@@ -6,6 +6,7 @@
  http://programarcadegames.com/
  http://simpson.edu/computer-science/
 
+@author Vivek Vellaiyappan | vivekvellaiyappans@gmail.com
 """
 
 import pygame
@@ -46,11 +47,11 @@ class Segment(pygame.sprite.Sprite):
 
 
 class HeadSegment(Segment):
-    def __init__(self, x, y):
+    def __init__(self):
         super().__init__(x, y)
-        self.image.fill(WHITE)
-        self.rect.x = x
-        self.rect.y = y
+        # filling green segment
+        self.image.fill(GREEN)
+
 
 # Call this function so the Pygame library can initialize itself
 pygame.init()
@@ -60,22 +61,17 @@ screen = pygame.display.set_mode([800, 600])
 
 # Set the title of the window
 pygame.display.set_caption('Snake Example')
-
-allspriteslist = pygame.sprite.Group()
+all_sprites_list = pygame.sprite.Group()
+segment_group = pygame.sprite.Group()
 
 # Create an initial snake
 snake_segments = []
 for i in range(15):
     x = 250 - (segment_width + segment_margin) * i
     y = 30
-    if i != 14:
-        segment = Segment(x, y)
-        snake_segments.append(segment)
-        allspriteslist.add(segment)
-    else:
-        segment = HeadSegment(x,y)
-        snake_segments.append(segment)
-        allspriteslist.add(segment)
+    segment = Segment(x, y)
+    snake_segments.append(segment)
+    all_sprites_list.add(segment)
 
 clock = pygame.time.Clock()
 done = False
@@ -106,31 +102,30 @@ while not done:
     # Get rid of last segment of the snake
     # .pop() command removes last item in list
     old_segment = snake_segments.pop()
-    allspriteslist.remove(old_segment)
+    all_sprites_list.remove(old_segment)
+    segment_group.remove(old_segment)
 
     # Figure out where new segment will be
     x = snake_segments[0].rect.x + x_change
     y = snake_segments[0].rect.y + y_change
-    segment = Segment(x, y)
+    head_segment = HeadSegment()
 
-    # Insert new segment into the list
-    snake_segments.insert(0, segment)
-    allspriteslist.add(segment)
+    snake_segment_collision = pygame.sprite.spritecollide(head_segment, segment_group, True)
 
-    head = HeadSegment(x,y)
-    head.image.fill(GREEN)
-    allspriteslist.add(head)
-    snake_segments.insert(0, head)
+    for i in snake_segment_collision:
+        print("Game over")
 
-    segment_group = pygame.sprite.Group()
-    segment_group
+    segment_group.add(head_segment)
+    snake_segments[0].image.fill(WHITE)
+    snake_segments.insert(0, head_segment)
 
+    all_sprites_list.add(head_segment)
 
     # -- Draw everything
     # Clear screen
     screen.fill(BLACK)
 
-    allspriteslist.draw(screen)
+    all_sprites_list.draw(screen)
 
     # Flip screen
     pygame.display.flip()
