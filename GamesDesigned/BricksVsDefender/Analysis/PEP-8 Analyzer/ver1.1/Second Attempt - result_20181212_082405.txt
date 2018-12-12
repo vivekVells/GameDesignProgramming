@@ -1,8 +1,17 @@
+Check results
+=============
+
+E501:5:80:line too long (107 > 79 characters)
+W503:351:25:line break before binary operator
+W503:352:25:line break before binary operator
+
+Code
+=============
 """
 Title: Bricks vs Defender
 Author: Vivek Vellaiyappan Surulimuthu | vivekvellaiyappans@gmail.com
 Proposal Submission Date: 13th September 2018
-Project Url: https://github.com/vivekVells/GameDesignProgramming/
+Project Url: https://github.com/vivekVells/GameDesignProgramming/tree/master/GamesDesigned/BricksVsDefender
 Aim:
   Combination of Brick Breaker and Pill ball Game but totally new concept
     that is not available anywhere in internet as of now.
@@ -347,11 +356,9 @@ class BrickBreaker(object):
 
                 for index, attempt in enumerate(self.attempt_score_list):
                     write_game_summary.write(
-                        "Attempt " +
-                        str(index + 1) +
-                        ": " +
-                        str(attempt) +
-                        "\n"
+                        "Attempt " + str(index + 1)
+                        + ": "
+                        + str(attempt) + "\n"
                     )
 
                 write_game_summary.close()
