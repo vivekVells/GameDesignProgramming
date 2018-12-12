@@ -1,0 +1,13 @@
+How to run the game
+  - Navigate to the following directory: BricksVsDefender\Code\MVP1\main where brick_breaker.py file is present and execute the following command
+  - In PyCharm:
+    - Make the "BricksVsDefender.zip" file be ready to be imported into the PyCharm
+    - Unzip above file
+    - In the PyCharm IDE, click File -> Open -> Navigate & open this unzipped folder
+    - Navigate to Code -> MVP1 -> main & right click "brick_breaker.py" file
+    - In the pop up menu, click "Run" option
+  - In Windows Machine: 
+      - .\BricksVsDefender\Code\MVP1\main>python brick_breaker.py
+
+Known Issues
+  - Paddle Width enlargement going out of the window frame on paddle power up feature usage

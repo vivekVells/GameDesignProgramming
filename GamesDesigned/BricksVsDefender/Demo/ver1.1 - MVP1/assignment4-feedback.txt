@@ -1,0 +1,14 @@
+Additional instructor's comments about your submission
+
+Nice work.
+Attendance 20/20
+o 3/3 days
+Conformance to specs 30/30
+o PowerPoint title yes
+o PowerPoint game design yes
+o PowerPoint not working yes
+o Splash screen yes
+o Game screen yes
+o Game over screen yes
+Effort, completeness, technique, artistry 50/50
+o You're well on your way to completing the game. 
