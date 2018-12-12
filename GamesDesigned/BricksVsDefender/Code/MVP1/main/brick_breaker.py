@@ -22,8 +22,6 @@ Short Note: (Will be doing the following)
 import sys
 import pygame
 
-from . import constant_entries
-
 # Screen Size
 SCREEN_SIZE = (640, 480)
 
@@ -32,7 +30,7 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 BLUE = (0, 0, 255)
 YELLOW = (200, 200, 0)
-RED = (220, 0, 0)
+RED = (220, 0, 0)  
 GREEN = (0, 128, 0)
 ORANGE = (255, 128, 0)
 VIOLET = (255, 0, 255)

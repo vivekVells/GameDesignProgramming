@@ -61,11 +61,3 @@ MAX_LIFE = 3
 MAX_SCORE_PER_BRICK = 10
 
 AUDIO_FILE_LOCATION = 'bing_audio.wav'
-
-
-def call():
-    pass
-
-
-if __name__ == "__main__":
-    call()
