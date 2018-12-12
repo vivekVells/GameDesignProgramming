@@ -81,6 +81,15 @@ MAX_SCORE_PER_BRICK = 10
 AUDIO_FILE_LOCATION = 'bing_audio.wav'
 
 
+def get_high_score():
+    try:
+        read_high_score_file = open("scores.txt", "r")
+
+        return read_high_score_file.readline()
+    except FileNotFoundError:
+        return str(0)
+
+
 class BrickBreaker(object):
     def __init__(self):
         pygame.init()
@@ -194,6 +203,14 @@ class BrickBreaker(object):
             self.ball.top = MAX_BALL_Y
             self.ball_vel[1] = -self.ball_vel[1]
 
+    def calculate_high_score(self):
+        current_high_score = int(get_high_score())
+
+        if self.score > current_high_score:
+            write_high_score = open("scores.txt", "w")
+            write_high_score.write(str(self.score))
+            write_high_score.close()
+
     def handle_collisions(self):
         for brick in self.bricks:
             if self.ball.colliderect(brick):
@@ -201,6 +218,7 @@ class BrickBreaker(object):
                 self.score += MAX_SCORE_PER_BRICK
                 self.ball_vel[1] = -self.ball_vel[1]
                 self.bricks.remove(brick)
+                self.calculate_high_score()
                 break
 
         for pow_brick in self.pow_bricks:
@@ -232,11 +250,14 @@ class BrickBreaker(object):
             font_surface = self.font.render("SCORED: " + str(self.score), True, GREEN)
             self.screen.blit(font_surface, (20, 5))
 
-            font_surface = self.font.render("MAX LIVES: " + str(self.max_lives), True, ORANGE)
+            font_surface = self.font.render("LIVES: " + str(self.max_lives), True, ORANGE)
             self.screen.blit(font_surface, (150, 5))
 
-            font_surface = self.font.render("Paddle Width Enlarge", True, VIOLET)
-            self.screen.blit(font_surface, (350, 5))
+            font_surface = self.font.render("Enlarged Paddle", True, VIOLET)
+            self.screen.blit(font_surface, (250, 5))
+
+            font_surface = self.font.render("Hi Score: " + get_high_score(), True, BLUE)
+            self.screen.blit(font_surface, (430, 5))
 
     def show_message(self, message):
         if self.font:
